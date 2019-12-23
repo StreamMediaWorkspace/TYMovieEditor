@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(testproject)
+project(TYMovieEditor)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -17,11 +17,11 @@ set(CMAKE_AUTOMOC ON)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 
-# Tell CMake to create the helloworld executable
-add_executable(helloworld WIN32 main.cpp PlayerDemo.cpp)
+# Tell CMake to create the TYMovieEditor executable
+add_executable(TYMovieEditor WIN32 main.cpp PlayerDemo.cpp)
 
-target_link_libraries(helloworld libopenshot.dll.a)
-target_link_libraries(helloworld libopenshot-audio.dll.a)
+target_link_libraries(TYMovieEditor libopenshot.dll.a)
+target_link_libraries(TYMovieEditor libopenshot-audio.dll.a)
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(helloworld Qt5::Widgets)
+target_link_libraries(TYMovieEditor Qt5::Widgets)
