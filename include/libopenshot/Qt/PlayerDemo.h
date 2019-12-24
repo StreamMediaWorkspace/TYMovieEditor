@@ -54,6 +54,8 @@ public:
     PlayerDemo(QWidget *parent = 0);
     ~PlayerDemo();
 
+    void setPosition(int pos);
+
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;

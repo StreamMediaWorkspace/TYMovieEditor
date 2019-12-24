@@ -230,7 +230,6 @@ Makefile: TYMovieEditor.pro ../../../project/msys32/mingw32/share/qt5/mkspecs/wi
 		../../../project/msys32/mingw32/share/qt5/mkspecs/features/qt_config.prf \
 		../../../project/msys32/mingw32/share/qt5/mkspecs/win32-g++/qmake.conf \
 		../../../project/msys32/mingw32/share/qt5/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		../../../project/msys32/mingw32/share/qt5/mkspecs/features/exclusive_builds.prf \
 		../../../project/msys32/mingw32/share/qt5/mkspecs/features/toolchain.prf \
 		../../../project/msys32/mingw32/share/qt5/mkspecs/features/default_pre.prf \
@@ -423,7 +422,6 @@ Makefile: TYMovieEditor.pro ../../../project/msys32/mingw32/share/qt5/mkspecs/wi
 ../../../project/msys32/mingw32/share/qt5/mkspecs/features/qt_config.prf:
 ../../../project/msys32/mingw32/share/qt5/mkspecs/win32-g++/qmake.conf:
 ../../../project/msys32/mingw32/share/qt5/mkspecs/features/spec_post.prf:
-.qmake.stash:
 ../../../project/msys32/mingw32/share/qt5/mkspecs/features/exclusive_builds.prf:
 ../../../project/msys32/mingw32/share/qt5/mkspecs/features/toolchain.prf:
 ../../../project/msys32/mingw32/share/qt5/mkspecs/features/default_pre.prf:

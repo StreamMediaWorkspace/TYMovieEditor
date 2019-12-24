@@ -27,13 +27,16 @@ INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
 
 SOURCES += \
     main.cpp \
-    PlayerDemo.cpp
+    PlayerDemo.cpp \
+    mainwindow.cpp
 
 HEADERS += \
-#    mainwindow.h
+ \#    mainwindow.h
+    mainwindow.h
 
 FORMS += \
- #   mainwindow.ui
+ \ #   mainwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

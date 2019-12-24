@@ -17,11 +17,16 @@ set(CMAKE_AUTOMOC ON)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 
-# Tell CMake to create the TYMovieEditor executable
-add_executable(TYMovieEditor WIN32 main.cpp PlayerDemo.cpp)
+aux_source_directory(. SRC_LIST)
+#qt5_add_resources(qrc_FILES drawable.qrc)
 
-target_link_libraries(TYMovieEditor libopenshot.dll.a)
-target_link_libraries(TYMovieEditor libopenshot-audio.dll.a)
+qt5_wrap_ui(ui_FILES mainwindow.ui)
+
+# Tell CMake to create the TYMovieEditor executable
+#add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES} ${qrc_FILES})
+add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES})
+
+target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)
 
 # Use the Widgets module from Qt 5.
 target_link_libraries(TYMovieEditor Qt5::Widgets)

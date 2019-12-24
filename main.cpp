@@ -29,14 +29,12 @@
  */
 
 #include <QApplication>
-#include <libopenshot/Qt/PlayerDemo.h>
-#pragma comment(lib, "./lib/libopenshot-audio.dll.a")
-#pragma comment(lib, "./lib/libopenshot.dll.a")
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    PlayerDemo demo;
-    demo.show();
+    MainWindow m;
+    m.show();
     return app.exec();
 }

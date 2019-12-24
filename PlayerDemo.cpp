@@ -33,7 +33,7 @@
 #include <PlayerDemo.h>
 #include <QMessageBox>
 #include <QFileDialog>
-
+#include <QDebug>
 PlayerDemo::PlayerDemo(QWidget *parent)
     : QWidget(parent)
     , vbox(new QVBoxLayout(this))
@@ -58,7 +58,14 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
     // Accept keyboard event
     setFocusPolicy(Qt::StrongFocus);
+}
 
+void PlayerDemo::setPosition(int pos){
+    if (player){
+        qDebug()<<"setPosition:"<<pos<<endl;
+        player->Speed(player->Speed()+1);
+        //player->Seek(pos);
+    }
 }
 
 PlayerDemo::~PlayerDemo()
