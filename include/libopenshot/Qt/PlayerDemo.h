@@ -44,6 +44,7 @@
 namespace openshot
 {
     class QtPlayer;
+	class FFmpegReader;
 }
 
 class PlayerDemo : public QWidget
@@ -55,6 +56,7 @@ public:
     ~PlayerDemo();
 
     void setPosition(int pos);
+	void open(const std::string &source);
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
@@ -68,6 +70,8 @@ private:
     QMenuBar *menu;
     VideoRenderWidget *video;
     openshot::QtPlayer *player;
+
+    uint64 m_frameNumber = 0;
 };
 
 #endif // OPENSHOT_PLAYER_H

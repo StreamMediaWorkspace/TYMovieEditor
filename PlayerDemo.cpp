@@ -30,10 +30,13 @@
 
 #include "stdio.h"
 #include <QtPlayer.h>
+#include <FFmpegReader.h>
 #include <PlayerDemo.h>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDebug>
+
+
 PlayerDemo::PlayerDemo(QWidget *parent)
     : QWidget(parent)
     , vbox(new QVBoxLayout(this))
@@ -58,13 +61,16 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
     // Accept keyboard event
     setFocusPolicy(Qt::StrongFocus);
+
+	//for test add by yang todo:delete
+	open(std::string("D:\\œ¬‘ÿ\\80s≤‚ ‘∂Ã∆¨_bd.mp4"));
 }
 
-void PlayerDemo::setPosition(int pos){
-    if (player){
-        qDebug()<<"setPosition:"<<pos<<endl;
-        player->Speed(player->Speed()+1);
-        //player->Seek(pos);
+void PlayerDemo::setPosition(int pos) {
+    if (player) {
+        int64_t position = pos * m_frameNumber / 100;
+        qDebug()<<"setPosition:"<<position<<", frame number:"<<m_frameNumber<<endl;
+        player->Seek(position);
     }
 }
 
@@ -134,8 +140,8 @@ void PlayerDemo::keyPressEvent(QKeyEvent *event)
 	}
 	else if (event->key() == Qt::Key_Right) {
 		std::cout << "FRAME STEP +1" << std::endl;
-		if (player->Speed() != 0)
-			player->Speed(0);
+        if (player->Speed() != 0)
+            player->Speed(0);
 		player->Seek(player->Position() + 1);
 	}
 	else if (event->key() == Qt::Key_Escape) {
@@ -152,6 +158,26 @@ void PlayerDemo::keyPressEvent(QKeyEvent *event)
 	QWidget::keyPressEvent(event);
 }
 
+void PlayerDemo::open(const std::string &source) {
+	//get file info
+	openshot::FFmpegReader ffreader(source);
+	m_frameNumber = ffreader.info.video_length;
+    qDebug()<<"m_frameNumber:"<<m_frameNumber<<endl;
+
+    ffreader.DisplayInfo();
+
+
+    // Create FFmpegReader and open file
+    player->SetSource(source);
+
+    // Set aspect ratio of widget
+    video->SetAspectRatio(ffreader.info.display_ratio, ffreader.info.pixel_ratio);
+
+    // Play video
+    player->Play();
+}
+
+
 void PlayerDemo::open(bool checked)
 {
     Q_UNUSED(checked);
@@ -159,12 +185,5 @@ void PlayerDemo::open(bool checked)
     const QString filename = QFileDialog::getOpenFileName(this, "Open Video File");
     if (filename.isEmpty()) return;
 
-    // Create FFmpegReader and open file
-    player->SetSource(filename.toStdString());
-
-    // Set aspect ratio of widget
-    video->SetAspectRatio(player->Reader()->info.display_ratio, player->Reader()->info.pixel_ratio);
-
-    // Play video
-    player->Play();
+    open(filename.toStdString());
 }

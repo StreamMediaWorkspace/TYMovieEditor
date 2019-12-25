@@ -30,11 +30,13 @@
 
 #include <QApplication>
 #include "mainwindow.h"
-
+//#include <PlayerDemo.h>
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     MainWindow m;
     m.show();
+    //PlayerDemo d;
+    //d.show();
     return app.exec();
 }
