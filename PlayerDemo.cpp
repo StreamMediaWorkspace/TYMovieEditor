@@ -62,9 +62,6 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
     // Accept keyboard event
     setFocusPolicy(Qt::StrongFocus);
-
-	//for test add by yang todo:delete
-	open(std::string("D:\\ÏÂÔØ\\80s²âÊÔ¶ÌÆ¬_bd.mp4"));
 }
 
 void PlayerDemo::setPosition(int pos) {
@@ -77,6 +74,11 @@ void PlayerDemo::setPosition(int pos) {
 
 PlayerDemo::~PlayerDemo()
 {
+    if(m_timeline){
+        m_timeline->Close();
+        delete m_timeline;
+        m_timeline = nullptr;
+    }
 }
 
 void PlayerDemo::closeEvent(QCloseEvent *event)
@@ -170,28 +172,33 @@ void PlayerDemo::openInCache(const std::string &source,
                           ffreader.info.channels, ffreader.info.channel_layout);
     openshot::Clip *c = new openshot::Clip(source);
     (*pTimeline)->AddClip(c);
-    (*pTimeline)->Open(); // Set the reader Reader(reader
+    (*pTimeline)->Open();
 }
 
 void PlayerDemo::open(const std::string &source) {
+    std::cout<<source<<std::endl;
     openshot::Timeline *pTimeline = nullptr;
     openshot::ReaderInfo info;
     openInCache(source, &pTimeline, info);
 
     m_frameNumber = info.video_length;
-
     if (m_timeline) {
+        player->Stop();
         m_timeline->Close();
         delete m_timeline;
+        m_timeline = nullptr;
     }
     m_timeline = pTimeline;
     player->Reader(m_timeline);
-
+	
     // Set aspect ratio of widget
     video->SetAspectRatio(info.display_ratio, info.pixel_ratio);
-
+    
     // Play video
     player->Play();
+	
+	//for test
+	//player->Seek(100);
 }
 
 

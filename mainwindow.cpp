@@ -15,7 +15,15 @@ void MainWindow::onPositionChanged(int pos){
 }
 
 void MainWindow::onChangeMovieClick() {
-    ui->movieWidget->open(std::string("C:\\Users\\TAL\\Music\\MV\\BLACKPINK-Kill This Love(标清).mp4"));
+    static int index = 0;
+    std::string name = "";
+    if (index%2 == 0) {
+        name = "D:\\code\\mycode\\TYMovieEditor\\80s_test_bd.mp4";
+    } else {
+        name = "D:\\code\\mycode\\TYMovieEditor\\BLACKPINK_Kill_This_Love.mp4";
+    }
+    index++;
+    ui->movieWidget->open(name);
 }
 
 MainWindow::~MainWindow()

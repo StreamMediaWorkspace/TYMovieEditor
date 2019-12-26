@@ -72,12 +72,12 @@ private slots:
     void open(bool checked);
 
 private:
-    QVBoxLayout *vbox;
-    QMenuBar *menu;
-    VideoRenderWidget *video;
-    openshot::QtPlayer *player;
+    QVBoxLayout *vbox = nullptr;
+    QMenuBar *menu = nullptr;
+    VideoRenderWidget *video = nullptr;
+    openshot::QtPlayer *player = nullptr;
 
-    openshot::Timeline *m_timeline;
+    openshot::Timeline *m_timeline = nullptr;
 
     uint64 m_frameNumber = 0;
 };
