@@ -16,6 +16,7 @@ public:
     ~MainWindow();
 private slots:
     void onPositionChanged(int pos);
+    void onChangeMovieClick();
 
 private:
     Ui::MainWindow *ui;

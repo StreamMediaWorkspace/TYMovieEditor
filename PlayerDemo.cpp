@@ -31,6 +31,7 @@
 #include "stdio.h"
 #include <QtPlayer.h>
 #include <FFmpegReader.h>
+#include <Timeline.h>
 #include <PlayerDemo.h>
 #include <QMessageBox>
 #include <QFileDialog>
@@ -158,20 +159,36 @@ void PlayerDemo::keyPressEvent(QKeyEvent *event)
 	QWidget::keyPressEvent(event);
 }
 
+void PlayerDemo::openInCache(const std::string &source,
+                             openshot::Timeline **pTimeline,
+                             openshot::ReaderInfo &info) {
+    openshot::FFmpegReader ffreader(source);
+    info = ffreader.info;
+
+    *pTimeline = new openshot::Timeline(ffreader.info.width, ffreader.info.height,
+                          ffreader.info.fps, ffreader.info.sample_rate,
+                          ffreader.info.channels, ffreader.info.channel_layout);
+    openshot::Clip *c = new openshot::Clip(source);
+    (*pTimeline)->AddClip(c);
+    (*pTimeline)->Open(); // Set the reader Reader(reader
+}
+
 void PlayerDemo::open(const std::string &source) {
-	//get file info
-	openshot::FFmpegReader ffreader(source);
-	m_frameNumber = ffreader.info.video_length;
-    qDebug()<<"m_frameNumber:"<<m_frameNumber<<endl;
+    openshot::Timeline *pTimeline = nullptr;
+    openshot::ReaderInfo info;
+    openInCache(source, &pTimeline, info);
 
-    ffreader.DisplayInfo();
+    m_frameNumber = info.video_length;
 
-
-    // Create FFmpegReader and open file
-    player->SetSource(source);
+    if (m_timeline) {
+        m_timeline->Close();
+        delete m_timeline;
+    }
+    m_timeline = pTimeline;
+    player->Reader(m_timeline);
 
     // Set aspect ratio of widget
-    video->SetAspectRatio(ffreader.info.display_ratio, ffreader.info.pixel_ratio);
+    video->SetAspectRatio(info.display_ratio, info.pixel_ratio);
 
     // Play video
     player->Play();
