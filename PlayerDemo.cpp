@@ -88,15 +88,15 @@ void PlayerDemo::loopPositionThread(PlayerDemo *p) {
 	while (!pThis->m_stop_positionThread && pThis->player) {
 		 if (current_frame != pThis->player->Position()) {
              current_frame = pThis->player->Position();
-			 emit PositionChanged(current_frame);
+			 //emit PositionChanged(current_frame);
 			 std::cout<<"current_frame:"<<current_frame<<std::endl;
 			 QCoreApplication::processEvents();
 		 }
 
 		 if (pThis->player->Mode() != current_mode) {
-                current_mode = pThis->player->Mode();
-				std::cout<<"current_mode:"<<current_mode<<std::endl;
-                emit ModeChanged(current_mode);
+             current_mode = pThis->player->Mode();
+			 std::cout<<"current_mode:"<<current_mode<<std::endl;
+             //emit ModeChanged(current_mode);
 		 }
 
 		 Sleep(50);
@@ -108,10 +108,30 @@ PlayerDemo::~PlayerDemo()
 {
 	m_stop_positionThread = true;
 	m_positionThread.reset();
-    if(m_timeline) {
+    if (m_timeline) {
         m_timeline->Close();
         delete m_timeline;
         m_timeline = nullptr;
+    }
+
+	if (vbox) {
+		delete vbox;
+		vbox = nullptr;
+	}
+
+    if (menu) {
+		delete menu;
+		menu = nullptr;
+	}
+
+    if (video) {
+		delete video;
+		video = nullptr;
+    }
+
+    if (player) {
+		delete player;
+		player = nullptr;
     }
 }
 
@@ -214,7 +234,6 @@ void PlayerDemo::open(const std::string &source) {
     openshot::Timeline *pTimeline = nullptr;
     openshot::ReaderInfo info;
     openInCache(source, &pTimeline, info);
-
     m_frameNumber = info.video_length;
     if (m_timeline) {
         player->Stop();
@@ -223,6 +242,7 @@ void PlayerDemo::open(const std::string &source) {
         m_timeline = nullptr;
     }
     m_timeline = pTimeline;
+	m_timeline->info = info;
     player->Reader(m_timeline);
 	
     // Set aspect ratio of widget

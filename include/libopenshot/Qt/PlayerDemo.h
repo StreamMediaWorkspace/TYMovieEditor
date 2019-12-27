@@ -85,6 +85,7 @@ private:
 			  pThread->join();
 			  delete pThread;
 			  pThread = nullptr;
+			  std::cout<<"thread end"<<std::endl;
 		  }
 	   }
 	};
