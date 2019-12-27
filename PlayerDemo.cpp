@@ -99,7 +99,11 @@ void PlayerDemo::loopPositionThread(PlayerDemo *p) {
              //emit ModeChanged(current_mode);
 		 }
 
+#ifdef __APPLE__
+         usleep(50000);
+#else
 		 Sleep(50);
+#endif
          QCoreApplication::processEvents();
 	}
 }
