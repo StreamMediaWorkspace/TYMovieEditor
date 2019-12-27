@@ -62,6 +62,8 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
     // Accept keyboard event
     setFocusPolicy(Qt::StrongFocus);
+
+	m_positionThread.reset(new std::thread(loopPositionThread, this));
 }
 
 void PlayerDemo::setPosition(int pos) {
@@ -72,9 +74,41 @@ void PlayerDemo::setPosition(int pos) {
     }
 }
 
+void PlayerDemo::loopPositionThread(PlayerDemo *p) {
+	PlayerDemo *pThis = (PlayerDemo*)p;
+	if(!pThis){
+		std::cout<<"failed error"<<std::endl;
+		return;
+	}
+
+	pThis->m_stop_positionThread = false;
+
+	uint64 current_frame = 0;
+	openshot::PlaybackMode current_mode = openshot::PLAYBACK_STOPPED;
+	while (!pThis->m_stop_positionThread && pThis->player) {
+		 if (current_frame != pThis->player->Position()) {
+             current_frame = pThis->player->Position();
+			 emit PositionChanged(current_frame);
+			 std::cout<<"current_frame:"<<current_frame<<std::endl;
+			 QCoreApplication::processEvents();
+		 }
+
+		 if (pThis->player->Mode() != current_mode) {
+                current_mode = pThis->player->Mode();
+				std::cout<<"current_mode:"<<current_mode<<std::endl;
+                emit ModeChanged(current_mode);
+		 }
+
+		 Sleep(50);
+         QCoreApplication::processEvents();
+	}
+}
+
 PlayerDemo::~PlayerDemo()
 {
-    if(m_timeline){
+	m_stop_positionThread = true;
+	m_positionThread.reset();
+    if(m_timeline) {
         m_timeline->Close();
         delete m_timeline;
         m_timeline = nullptr;
@@ -196,11 +230,8 @@ void PlayerDemo::open(const std::string &source) {
     
     // Play video
     player->Play();
-	
-	//for test
-	//player->Seek(100);
+	//player->Pause();
 }
-
 
 void PlayerDemo::open(bool checked)
 {

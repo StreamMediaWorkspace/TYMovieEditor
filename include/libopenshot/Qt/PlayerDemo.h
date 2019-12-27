@@ -35,8 +35,10 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
+#include <thread>
 #include <QtGui/qevent.h>
 #include <QApplication>
+#include <PlayerBase.h>
 
 #include "VideoRenderWidget.h"
 
@@ -64,12 +66,30 @@ public:
                      openshot::Timeline **pTimeline,
                      openshot::ReaderInfo &info);
 
+signals:
+	void PositionChanged(uint64);
+    void ModeChanged(openshot::PlaybackMode);
+
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
     void open(bool checked);
+
+private:
+	struct LockDeleter {
+	   void operator()(void *p) {
+		   std::thread *pThread = (std::thread*)p;
+		  if (pThread) {
+			  pThread->join();
+			  delete pThread;
+			  pThread = nullptr;
+		  }
+	   }
+	};
+
+	static void loopPositionThread(PlayerDemo *p);
 
 private:
     QVBoxLayout *vbox = nullptr;
@@ -80,6 +100,9 @@ private:
     openshot::Timeline *m_timeline = nullptr;
 
     uint64 m_frameNumber = 0;
+
+	std::unique_ptr<std::thread, LockDeleter> m_positionThread = nullptr;
+	bool m_stop_positionThread = true;
 };
 
 #endif // OPENSHOT_PLAYER_H
