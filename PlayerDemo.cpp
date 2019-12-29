@@ -74,7 +74,7 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
 void PlayerDemo::setPosition(int pos) {
     if (player) {
-        int64_t position = pos * m_frameNumber / 100;
+        int64_t position = pos * player->Reader()->info.video_length / 100;
         qDebug()<<"setPosition:"<<position<<", frame number:"<<m_frameNumber<<endl;
         player->Seek(position);
     }
@@ -243,6 +243,7 @@ void PlayerDemo::openInCache(const std::string &source,
 void PlayerDemo::open(const std::string &source) {
     std::cout<<source<<std::endl;
 
+    player->Pause();
     if (m_timeline) {
         std::list<openshot::Clip*> clips = m_timeline->Clips();
         std::list<openshot::Clip*>::iterator it;
@@ -262,8 +263,9 @@ void PlayerDemo::open(const std::string &source) {
         player->Reader(m_timeline);
     }*/
 
+
     openshot::Clip *c = new openshot::Clip(source);
-    c->Position(0);
+    //c->Position(0);
     m_timeline->info = ffreader.info;
     m_timeline->AddClip(c);
     m_timeline->Open();
@@ -272,11 +274,13 @@ void PlayerDemo::open(const std::string &source) {
     // Set aspect ratio of widget
     video->SetAspectRatio(m_timeline->info.display_ratio, m_timeline->info.pixel_ratio);
     
+    player->Seek(1);
+
     // Play video
     player->Play();
-    //player->Seek(100);
 
-	//player->Pause();
+
+    //
 }
 
 void PlayerDemo::open(bool checked)

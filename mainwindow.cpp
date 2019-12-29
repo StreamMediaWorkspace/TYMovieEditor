@@ -24,7 +24,7 @@ void MainWindow::onChangeMovieClick() {
         name = ".\\BLACKPINK_Kill_This_Love.mp4";
     }
 #else
-    if (index%2 == 1) {
+    if (index%2 == 0) {
         name = "/Users/admin/Downloads/project/TYMovieEditor/80s_test_bd.mp4";
     } else {
         name = "/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4";
