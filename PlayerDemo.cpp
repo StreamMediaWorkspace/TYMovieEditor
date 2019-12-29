@@ -63,6 +63,12 @@ PlayerDemo::PlayerDemo(QWidget *parent)
     // Accept keyboard event
     setFocusPolicy(Qt::StrongFocus);
 
+    m_timeline = new openshot::Timeline(1280, 720,
+                          openshot::Fraction(25, 1), 44100,
+                          2, openshot::ChannelLayout::LAYOUT_STEREO);
+
+    player->Reader(m_timeline);
+
 	m_positionThread.reset(new std::thread(loopPositionThread, this));
 }
 
@@ -229,31 +235,47 @@ void PlayerDemo::openInCache(const std::string &source,
                           ffreader.info.fps, ffreader.info.sample_rate,
                           ffreader.info.channels, ffreader.info.channel_layout);
     openshot::Clip *c = new openshot::Clip(source);
+    (*pTimeline)->info = info;
     (*pTimeline)->AddClip(c);
     (*pTimeline)->Open();
 }
 
 void PlayerDemo::open(const std::string &source) {
     std::cout<<source<<std::endl;
-    openshot::Timeline *pTimeline = nullptr;
-    openshot::ReaderInfo info;
-    openInCache(source, &pTimeline, info);
-    m_frameNumber = info.video_length;
+
     if (m_timeline) {
-        player->Stop();
-        m_timeline->Close();
-        delete m_timeline;
-        m_timeline = nullptr;
+        std::list<openshot::Clip*> clips = m_timeline->Clips();
+        std::list<openshot::Clip*>::iterator it;
+        for (it=clips.begin(); it != clips.end(); it++){
+            m_timeline->RemoveClip(*it);
+        }
+
+        m_timeline->ClearAllCache();
     }
-    m_timeline = pTimeline;
-	m_timeline->info = info;
-    player->Reader(m_timeline);
+
+    openshot::FFmpegReader ffreader(source);
+    /*if (!m_timeline) {
+        m_timeline = new openshot::Timeline(ffreader.info.width, ffreader.info.height,
+                                        ffreader.info.fps, ffreader.info.sample_rate,
+                                        ffreader.info.channels, ffreader.info.channel_layout);
+
+        player->Reader(m_timeline);
+    }*/
+
+    openshot::Clip *c = new openshot::Clip(source);
+    c->Position(0);
+    m_timeline->info = ffreader.info;
+    m_timeline->AddClip(c);
+    m_timeline->Open();
+    //player->Seek(100);
 	
     // Set aspect ratio of widget
-    video->SetAspectRatio(info.display_ratio, info.pixel_ratio);
+    video->SetAspectRatio(m_timeline->info.display_ratio, m_timeline->info.pixel_ratio);
     
     // Play video
     player->Play();
+    //player->Seek(100);
+
 	//player->Pause();
 }
 

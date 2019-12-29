@@ -17,11 +17,19 @@ void MainWindow::onPositionChanged(int pos){
 void MainWindow::onChangeMovieClick() {
     static int index = 0;
     std::string name = "";
+#ifdef WIN32
     if (index%2 == 0) {
-        name = "D:\\code\\mycode\\TYMovieEditor\\80s_test_bd.mp4";
+        name = ".\\80s_test_bd.mp4";
     } else {
-        name = "D:\\code\\mycode\\TYMovieEditor\\BLACKPINK_Kill_This_Love.mp4";
+        name = ".\\BLACKPINK_Kill_This_Love.mp4";
     }
+#else
+    if (index%2 == 1) {
+        name = "/Users/admin/Downloads/project/TYMovieEditor/80s_test_bd.mp4";
+    } else {
+        name = "/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4";
+    }
+#endif
     index++;
     ui->movieWidget->open(name);
 }
