@@ -19,9 +19,9 @@ void MainWindow::onChangeMovieClick() {
     std::string name = "";
 #ifdef WIN32
     if (index%2 == 0) {
-        name = ".\\80s_test_bd.mp4";
+        name = "../80s_test_bd.mp4";
     } else {
-        name = ".\\BLACKPINK_Kill_This_Love.mp4";
+        name = "../BLACKPINK_Kill_This_Love.mp4";
     }
 #else
     if (index%2 == 0) {

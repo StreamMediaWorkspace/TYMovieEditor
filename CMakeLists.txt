@@ -26,11 +26,13 @@ qt5_wrap_ui(ui_FILES mainwindow.ui)
 #add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES} ${qrc_FILES})
 add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES})
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)
-ELSE ()
-target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)
-
+IF (WIN32)
+    target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)
+ELSEIF (APPLE)
+    target_link_libraries(TYMovieEditor libopenshot.dylib libopenshot-audio.dylib)
+ELSE (UNIX)
+    target_link_libraries(TYMovieEditor libopenshot.dylib libopenshot-audio.dylib)
+ENDIF()
 
 # Use the Widgets module from Qt 5.
 target_link_libraries(TYMovieEditor Qt5::Widgets)
