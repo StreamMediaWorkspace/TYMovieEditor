@@ -25,6 +25,17 @@ INCLUDEPATH += "./include/libopenshot/Qt"
 INCLUDEPATH += "./include/libopenshot-audio"
 INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
 
+win32{
+}
+
+mac{
+    LIBS += $$PWD/lib/libopenshot-audio.dylib
+    LIBS += $$PWD/lib/libopenshot.dylib
+    INCLUDEPATH += $$PWD/include/mac/zmq
+    INCLUDEPATH += /usr/local/include
+    INCLUDEPATH += /usr/local/Cellar/jsoncpp/1.9.1/include
+}
+
 SOURCES += \
     main.cpp \
     PlayerDemo.cpp \
