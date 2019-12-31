@@ -27,16 +27,28 @@ INCLUDEPATH += "./include/libopenshot-audio"
 win32{
     #DEFINES += _WIN32_WINNT=0x600
     INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
-    LIBS += $$PWD/lib/libopenshot-audio.dll.a
-    LIBS += $$PWD/lib/libopenshot.dll.a
+
+    CONFIG(debug, debug|release){
+        LIBS += $$PWD/lib/Debug/libopenshot-audio.dll.a
+        LIBS += $$PWD/lib/Debug/libopenshot.dll.a
+    } else{
+        LIBS += $$PWD/lib/Release/libopenshot-audio.dll.a
+        LIBS += $$PWD/lib/Release/libopenshot.dll.a
+    }
 }
 
 mac{
-    LIBS += $$PWD/lib/libopenshot-audio.dylib
-    LIBS += $$PWD/lib/libopenshot.dylib
     INCLUDEPATH += $$PWD/include/mac/zmq
     INCLUDEPATH += /usr/local/include
     INCLUDEPATH += /usr/local/Cellar/jsoncpp/1.9.1/include
+
+    CONFIG(debug, debug|release){
+        LIBS += $$PWD/lib/Debug/libopenshot-audio.dylib
+        LIBS += $$PWD/lib/Debug/libopenshot.dylib
+    } else{
+        LIBS += $$PWD/lib/Release/libopenshot-audio.dylib
+        LIBS += $$PWD/lib/Release/libopenshot.dylib
+    }
 }
 
 SOURCES += \

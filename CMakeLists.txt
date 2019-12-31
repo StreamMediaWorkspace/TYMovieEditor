@@ -9,7 +9,7 @@ include_directories("./include/libopenshot-audio")
 include_directories("./include/libopenshot")
 include_directories("./include/libopenshot/Qt")
 
-link_directories("./lib")
+link_directories("./lib/Release")
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -29,6 +29,8 @@ add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES})
 IF (WIN32)
     target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)
 ELSEIF (APPLE)
+    include_directories("./include/mac/zmq")
+    include_directories("/usr/local/include/")
     target_link_libraries(TYMovieEditor libopenshot.dylib libopenshot-audio.dylib)
 ELSE (UNIX)
     target_link_libraries(TYMovieEditor libopenshot.dylib libopenshot-audio.dylib)
