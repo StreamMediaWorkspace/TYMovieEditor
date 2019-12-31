@@ -67,7 +67,7 @@ public:
                      openshot::ReaderInfo &info);
 
 signals:
-	void PositionChanged(uint64);
+    void PositionChanged(uint64);
     void ModeChanged(openshot::PlaybackMode);
 
 protected:

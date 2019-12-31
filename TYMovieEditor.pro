@@ -24,6 +24,8 @@ INCLUDEPATH += "./include/libopenshot"
 INCLUDEPATH += "./include/libopenshot/Qt"
 INCLUDEPATH += "./include/libopenshot-audio"
 
+CONFIG += debug_and_release
+
 win32{
     #DEFINES += _WIN32_WINNT=0x600
     INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
@@ -45,7 +47,7 @@ mac{
     CONFIG(debug, debug|release){
         LIBS += $$PWD/lib/Debug/libopenshot-audio.dylib
         LIBS += $$PWD/lib/Debug/libopenshot.dylib
-    } else{
+    } else {
         LIBS += $$PWD/lib/Release/libopenshot-audio.dylib
         LIBS += $$PWD/lib/Release/libopenshot.dylib
     }
