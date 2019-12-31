@@ -17,15 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 QMAKE_CXXFLAGS += -std=c++0x -pthread
 LIBS += -pthread
-DEFINES += _WIN32_WINNT=0x600
+
 
 INCLUDEPATH += "./include"
 INCLUDEPATH += "./include/libopenshot"
 INCLUDEPATH += "./include/libopenshot/Qt"
 INCLUDEPATH += "./include/libopenshot-audio"
-INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
 
 win32{
+    #DEFINES += _WIN32_WINNT=0x600
+    INCLUDEPATH += "D:/project/msys32/mingw32/i686-w64-mingw32/include"
+    LIBS += $$PWD/lib/libopenshot-audio.dll.a
+    LIBS += $$PWD/lib/libopenshot.dll.a
 }
 
 mac{
@@ -37,9 +40,9 @@ mac{
 }
 
 SOURCES += \
-    main.cpp \
     PlayerDemo.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    main.cpp
 
 HEADERS += \
     mainwindow.h
