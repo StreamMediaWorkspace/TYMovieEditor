@@ -94,7 +94,7 @@ void PlayerDemo::loopPositionThread(PlayerDemo *p) {
 	while (!pThis->m_stop_positionThread && pThis->player) {
 		 if (current_frame != pThis->player->Position()) {
              current_frame = pThis->player->Position();
-             //emit pThis->PositionChanged((unsigned long long)current_frame);
+             emit pThis->PositionChanged((unsigned long long)current_frame);
 			 std::cout<<"current_frame:"<<current_frame<<std::endl;
 			 QCoreApplication::processEvents();
 		 }
@@ -102,7 +102,7 @@ void PlayerDemo::loopPositionThread(PlayerDemo *p) {
 		 if (pThis->player->Mode() != current_mode) {
              current_mode = pThis->player->Mode();
 			 std::cout<<"current_mode:"<<current_mode<<std::endl;
-             //emit pThis->ModeChanged(current_mode);
+             emit pThis->ModeChanged(current_mode);
 		 }
 
 #ifdef __APPLE__

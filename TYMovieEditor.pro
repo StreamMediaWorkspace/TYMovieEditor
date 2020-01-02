@@ -24,7 +24,6 @@ INCLUDEPATH += "./include/libopenshot"
 INCLUDEPATH += "./include/libopenshot/Qt"
 INCLUDEPATH += "./include/libopenshot-audio"
 
-CONFIG += debug_and_release
 
 win32{
     #DEFINES += _WIN32_WINNT=0x600
@@ -44,9 +43,9 @@ mac{
     INCLUDEPATH += /usr/local/include
     INCLUDEPATH += /usr/local/Cellar/jsoncpp/1.9.1/include
 
-    CONFIG(debug, debug|release){
-        LIBS += $$PWD/lib/Debug/libopenshot-audio.dylib
-        LIBS += $$PWD/lib/Debug/libopenshot.dylib
+    CONFIG(debug, debug|release) {
+        LIBS += $$PWD/lib/Release/libopenshot-audio.dylib
+        LIBS += $$PWD/lib/Release/libopenshot.dylib
     } else {
         LIBS += $$PWD/lib/Release/libopenshot-audio.dylib
         LIBS += $$PWD/lib/Release/libopenshot.dylib
@@ -56,10 +55,11 @@ mac{
 SOURCES += \
     PlayerDemo.cpp \
     mainwindow.cpp \
-    main.cpp
+    main.cpp \
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    ./include/libopenshot/Qt/PlayerDemo.h \
 
 FORMS += \
     mainwindow.ui

@@ -66,16 +66,16 @@ public:
                      openshot::Timeline **pTimeline,
                      openshot::ReaderInfo &info);
 
-signals:
-    void PositionChanged(uint64);
-    void ModeChanged(openshot::PlaybackMode);
-
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
     void open(bool checked);
+
+signals:
+    void PositionChanged(uint64);
+    void ModeChanged(openshot::PlaybackMode);
 
 private:
 	struct LockDeleter {
@@ -102,8 +102,8 @@ private:
 
     uint64 m_frameNumber = 0;
 
-	std::unique_ptr<std::thread, LockDeleter> m_positionThread = nullptr;
-	bool m_stop_positionThread = true;
+    std::unique_ptr<std::thread, LockDeleter> m_positionThread = nullptr;
+    bool m_stop_positionThread = true;
 };
 
 #endif // OPENSHOT_PLAYER_H
