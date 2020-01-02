@@ -14,8 +14,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 private slots:
-    void onPositionChanged(int pos);
+    void onChangPosition(int pos);
+    void onPositionChanged(unsigned long long);
     void onChangeMovieClick();
 
 private:

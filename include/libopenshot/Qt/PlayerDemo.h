@@ -74,7 +74,7 @@ private slots:
     void open(bool checked);
 
 signals:
-    void PositionChanged(uint64);
+    void PositionChanged(unsigned long long);
     void ModeChanged(openshot::PlaybackMode);
 
 private:
@@ -99,8 +99,6 @@ private:
     openshot::QtPlayer *player = nullptr;
 
     openshot::Timeline *m_timeline = nullptr;
-
-    uint64 m_frameNumber = 0;
 
     std::unique_ptr<std::thread, LockDeleter> m_positionThread = nullptr;
     bool m_stop_positionThread = true;

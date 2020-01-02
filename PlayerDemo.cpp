@@ -74,8 +74,9 @@ PlayerDemo::PlayerDemo(QWidget *parent)
 
 void PlayerDemo::setPosition(int pos) {
     if (player) {
+        uint64 frameNumber = player->Reader()->info.video_length;
         int64_t position = pos * player->Reader()->info.video_length / 100;
-        qDebug()<<"setPosition:"<<position<<", frame number:"<<m_frameNumber<<endl;
+        qDebug()<<"setPosition:"<<position<<", frame number:"<<frameNumber<<endl;
         player->Seek(position);
     }
 }
@@ -94,7 +95,12 @@ void PlayerDemo::loopPositionThread(PlayerDemo *p) {
 	while (!pThis->m_stop_positionThread && pThis->player) {
 		 if (current_frame != pThis->player->Position()) {
              current_frame = pThis->player->Position();
-             emit pThis->PositionChanged((unsigned long long)current_frame);
+
+             //test
+             int64_t position = current_frame * 100 / pThis->player->Reader()->info.video_length;
+             emit pThis->PositionChanged((unsigned long long)position);
+
+             //emit pThis->PositionChanged((unsigned long long)current_frame);
 			 std::cout<<"current_frame:"<<current_frame<<std::endl;
 			 QCoreApplication::processEvents();
 		 }

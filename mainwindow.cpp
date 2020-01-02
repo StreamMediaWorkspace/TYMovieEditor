@@ -6,12 +6,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->postionSlider, SIGNAL(valueChanged(int)), this, SLOT(onPositionChanged(int)));
+    connect(ui->postionSlider, SIGNAL(valueChanged(int)), this, SLOT(onChangPosition(int)));
     connect(ui->btnChangedMovie, SIGNAL(clicked(bool)), SLOT(onChangeMovieClick()));
+
+    //connect(ui->movieWidget, SIGNAL(PositionChanged(unsigned long long)), this, SLOT(onPositionChanged(unsigned long long)));
 }
 
-void MainWindow::onPositionChanged(int pos){
+void MainWindow::onChangPosition(int pos) {
     ui->movieWidget->setPosition(pos);
+}
+
+void MainWindow::onPositionChanged(unsigned long long pos){
+    if (pos != ui->postionSlider->value()) {
+        ui->postionSlider->setValue(pos);
+    }
 }
 
 void MainWindow::onChangeMovieClick() {
