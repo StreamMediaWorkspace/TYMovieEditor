@@ -8,8 +8,10 @@ include_directories("./include")
 include_directories("./include/libopenshot-audio")
 include_directories("./include/libopenshot")
 include_directories("./include/libopenshot/Qt")
+include_directories("./include/json")
 
 link_directories("./lib/Release")
+
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -25,6 +27,7 @@ qt5_wrap_ui(ui_FILES mainwindow.ui)
 # Tell CMake to create the TYMovieEditor executable
 #add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES} ${qrc_FILES})
 add_executable(TYMovieEditor ${SRC_LIST} ${ui_FILES})
+
 
 IF (WIN32)
     target_link_libraries(TYMovieEditor libopenshot.dll.a libopenshot-audio.dll.a)

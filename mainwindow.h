@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QHash>
+#include <Json.h>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +24,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    QHash<QString, Json::Value*> m_fileHash;
 };
 
 #endif // MAINWINDOW_H

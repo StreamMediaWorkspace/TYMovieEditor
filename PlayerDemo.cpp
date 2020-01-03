@@ -64,12 +64,12 @@ PlayerDemo::PlayerDemo(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
 
     m_timeline = new openshot::Timeline(1280, 720,
-                          openshot::Fraction(25, 1), 44100,
+                          openshot::Fraction(14, 1), 48000,
                           2, openshot::ChannelLayout::LAYOUT_STEREO);
 
     player->Reader(m_timeline);
 
-	m_positionThread.reset(new std::thread(loopPositionThread, this));
+    m_positionThread.reset(new std::thread(loopPositionThread, this));
 }
 
 void PlayerDemo::setPosition(int pos) {
@@ -231,65 +231,50 @@ void PlayerDemo::keyPressEvent(QKeyEvent *event)
 	QWidget::keyPressEvent(event);
 }
 
-void PlayerDemo::openInCache(const std::string &source,
-                             openshot::Timeline **pTimeline,
-                             openshot::ReaderInfo &info) {
-    openshot::FFmpegReader ffreader(source);
-    info = ffreader.info;
+void PlayerDemo::open(Json::Value *fileInfo) {
+    Q_ASSERT(fileInfo);
 
-    *pTimeline = new openshot::Timeline(ffreader.info.width, ffreader.info.height,
-                          ffreader.info.fps, ffreader.info.sample_rate,
-                          ffreader.info.channels, ffreader.info.channel_layout);
-    openshot::Clip *c = new openshot::Clip(source);
-    (*pTimeline)->info = info;
-    (*pTimeline)->AddClip(c);
-    (*pTimeline)->Open();
-}
-
-void PlayerDemo::open(const std::string &source) {
+    std::string source = (*fileInfo)["name"].asString();
     std::cout<<source<<std::endl;
 
     player->Pause();
+    if (m_currentFileInfo) {
+        (*m_currentFileInfo)["position"] = player->Position();
+    }
+
+    m_currentFileInfo = fileInfo;
     if (m_timeline) {
         std::list<openshot::Clip*> clips = m_timeline->Clips();
         std::list<openshot::Clip*>::iterator it;
-        for (it=clips.begin(); it != clips.end(); it++){
+        for (it = clips.begin(); it != clips.end(); it++) {
+            openshot::Clip *clip = *it;
+            clip->Close();
             m_timeline->RemoveClip(*it);
+            delete clip;
+            clip = nullptr;
         }
+        clips.clear();
 
         m_timeline->ClearAllCache();
     }
 
     openshot::FFmpegReader ffreader(source);
-    /*if (!m_timeline) {
-        m_timeline = new openshot::Timeline(ffreader.info.width, ffreader.info.height,
-                                        ffreader.info.fps, ffreader.info.sample_rate,
-                                        ffreader.info.channels, ffreader.info.channel_layout);
-
-        player->Reader(m_timeline);
-    }*/
-
-
-    openshot::Clip *c = new openshot::Clip(source);
-    //c->Position(0);
+    openshot::Clip *clip = new openshot::Clip(source);
     m_timeline->info = ffreader.info;
-    m_timeline->AddClip(c);
+    m_timeline->AddClip(clip);
     m_timeline->Open();
-    //player->Seek(100);
 	
     // Set aspect ratio of widget
     video->SetAspectRatio(m_timeline->info.display_ratio, m_timeline->info.pixel_ratio);
     
-    player->Seek(1);
+    uint64 position = (*fileInfo)["position"].asUInt64();
+    player->Seek(position);
 
     // Play video
     player->Play();
-
-
-    //
 }
 
-void PlayerDemo::open(bool checked)
+/*void PlayerDemo::open(bool checked)
 {
     Q_UNUSED(checked);
 	// Get filename of media files
@@ -297,4 +282,4 @@ void PlayerDemo::open(bool checked)
     if (filename.isEmpty()) return;
 
     open(filename.toStdString());
-}
+}*/

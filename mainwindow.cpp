@@ -25,6 +25,7 @@ void MainWindow::onPositionChanged(unsigned long long pos){
 void MainWindow::onChangeMovieClick() {
     static int index = 0;
     std::string name = "";
+    Json::Value *fileInfo = nullptr;
 #ifdef WIN32
     if (index%2 == 0) {
         name = "../80s_test_bd.mp4";
@@ -32,14 +33,23 @@ void MainWindow::onChangeMovieClick() {
         name = "../BLACKPINK_Kill_This_Love.mp4";
     }
 #else
-    if (index%2 == 0) {
+    if (index%2 == 1) {
         name = "/Users/admin/Downloads/project/TYMovieEditor/80s_test_bd.mp4";
     } else {
         name = "/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4";
     }
 #endif
     index++;
-    ui->movieWidget->open(name);
+    QHash<QString, Json::Value*>::Iterator it = m_fileHash.find(name.c_str());
+    if (it == m_fileHash.end()) {
+        fileInfo = new Json::Value();
+        (*fileInfo)["name"] = name;
+        (*fileInfo)["position"] = 0;
+        m_fileHash.insert(name.c_str(), fileInfo);
+    } else {
+        fileInfo = it.value();
+    }
+    ui->movieWidget->open(fileInfo);
 }
 
 MainWindow::~MainWindow()

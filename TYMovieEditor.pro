@@ -56,10 +56,12 @@ SOURCES += \
     PlayerDemo.cpp \
     mainwindow.cpp \
     main.cpp \
+    jsoncpp.cpp \
 
 HEADERS += \
     mainwindow.h \
     ./include/libopenshot/Qt/PlayerDemo.h \
+    ./include/json/json.h
 
 FORMS += \
     mainwindow.ui

@@ -60,18 +60,14 @@ public:
     ~PlayerDemo();
 
     void setPosition(int pos);
-    void open(const std::string &source);
-
-    void openInCache(const std::string &source,
-                     openshot::Timeline **pTimeline,
-                     openshot::ReaderInfo &info);
+    void open(Json::Value *fileInfo);
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-    void open(bool checked);
+    //void open(bool checked);
 
 signals:
     void PositionChanged(unsigned long long);
@@ -102,6 +98,8 @@ private:
 
     std::unique_ptr<std::thread, LockDeleter> m_positionThread = nullptr;
     bool m_stop_positionThread = true;
+
+    Json::Value *m_currentFileInfo = nullptr;
 };
 
 #endif // OPENSHOT_PLAYER_H
