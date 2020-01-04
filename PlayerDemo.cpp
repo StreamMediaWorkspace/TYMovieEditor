@@ -64,7 +64,7 @@ PlayerDemo::PlayerDemo(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
 
     m_timeline = new openshot::Timeline(1280, 720,
-                          openshot::Fraction(14, 1), 48000,
+                          openshot::Fraction(24, 1), 48000,
                           2, openshot::ChannelLayout::LAYOUT_STEREO);
 
     player->Reader(m_timeline);
@@ -248,10 +248,10 @@ void PlayerDemo::open(Json::Value *fileInfo) {
         std::list<openshot::Clip*>::iterator it;
         for (it = clips.begin(); it != clips.end(); it++) {
             openshot::Clip *clip = *it;
-            clip->Close();
+            //clip->Close();
             m_timeline->RemoveClip(*it);
-            delete clip;
-            clip = nullptr;
+            //delete clip;
+            //clip = nullptr;
         }
         clips.clear();
 
